@@ -21,9 +21,11 @@ public class UserService {
             result =(List<User>) userRepository.search(keyword);
 
         }
+        else {
 
-        System.out.println("getAllUsers");
-         result = (List<User>) userRepository.findAll();
+            System.out.println("getAllUsers");
+            result = (List<User>) userRepository.findAll();
+        }
 
         if(result.size() > 0) {
             return result;
