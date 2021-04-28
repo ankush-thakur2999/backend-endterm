@@ -14,10 +14,16 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    public List<User> getAllEmployees()
+    public List<User> getAllUsers(String keyword)
     {
-        System.out.println("getAllEmployees");
-        List<User> result = (List<User>) userRepository.findAll();
+        List<User> result;
+        if(keyword !=null){
+            result =(List<User>) userRepository.search(keyword);
+
+        }
+
+        System.out.println("getAllUsers");
+         result = (List<User>) userRepository.findAll();
 
         if(result.size() > 0) {
             return result;
@@ -27,13 +33,13 @@ public class UserService {
     }
     public User getUserById(Long id) throws RecordNotFoundException
     {
-        System.out.println("getEmployeeById");
+        System.out.println("getUserById");
         Optional<User> user = userRepository.findById(id);
 
         if(user.isPresent()) {
             return user.get();
         } else {
-            throw new RecordNotFoundException("No employee record exist for given id");
+            throw new RecordNotFoundException("No User record exist for given id");
         }
     }
     public void deleteUserById(Long id) throws RecordNotFoundException
@@ -46,12 +52,12 @@ public class UserService {
         {
             userRepository.deleteById(id);
         } else {
-            throw new RecordNotFoundException("No employee record exist for given id");
+            throw new RecordNotFoundException("NoUser record exist for given id");
         }
     }
     public User createOrUpdateUser(User user)
     {
-        System.out.println("createOrUpdateEmployee");
+        System.out.println("createOrUpdateUser");
         // Create new entry
         if(user.getId()  == null)
         {

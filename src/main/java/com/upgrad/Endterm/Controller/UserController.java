@@ -5,6 +5,7 @@ import com.upgrad.Endterm.Exception.RecordNotFoundException;
 import com.upgrad.Endterm.Model.User;
 import com.upgrad.Endterm.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,18 +16,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/")
+
 public class UserController {
     @Autowired
     private UserService userService;
-    @RequestMapping
-    public String getAllEmployees(Model model)
+    @RequestMapping("/")
+    public String getAllUsers(Model model,@Param("keyword") String keyword)
     {
         System.out.println("getAllUsers");
 
-        List<User> list = userService.getAllEmployees();
+        List<User> list = userService.getAllUsers(keyword);
 
         model.addAttribute("users", list);
+        model.addAttribute("keyword", keyword);
 
         return "list-user";
     }
@@ -54,12 +56,12 @@ public class UserController {
             throws RecordNotFoundException
     {
 
-        System.out.println("deleteEmployeeById" + id);
+        System.out.println("deleteUserById" + id);
 
         userService.deleteUserById(id);
         return "redirect:/";
     }
-    @RequestMapping(path = "/createEmployee", method = RequestMethod.POST)
+    @RequestMapping(path = "/createUser", method = RequestMethod.POST)
     public String createOrUpdateEmployee(User user)
     {
         System.out.println("createOrUpdateEmployee ");
